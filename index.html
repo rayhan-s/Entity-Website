@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entity Premier Team</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #ff4655;
+            --dark-bg: #0a0e27;
+            --card-bg: #1a1f3a;
+            --text-light: #e4e4e7;
+            --text-muted: #a1a1a5;
+            --accent: #00d4ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--dark-bg) 0%, var(--card-bg) 100%);
+            padding: 2rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid transparent;
+        }
+
+        nav a:hover {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        nav a.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.6);
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .team-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: rgba(26, 31, 58, 0.8);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Roster Section */
+        .roster-section {
+            padding: 4rem 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-light);
+        }
+
+        .section-title span {
+            color: var(--primary);
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 2rem;
+        }
+
+        .carousel-item {
+            flex: 0 0 100%;
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .player-visual {
+            flex: 1;
+            min-height: 500px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 60px rgba(255, 70, 85, 0.2);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .player-details {
+            flex: 1;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .player-role {
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-name {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .player-description {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .player-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-box {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 3px solid var(--primary);
+        }
+
+        .stat-box-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-box-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        .carousel-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            justify-content: center;
+            margin-top: 3rem;
+        }
+
+        .carousel-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-btn:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .carousel-dots {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: var(--primary);
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 4rem 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: var(--card-bg);
+            color: var(--text-light);
+            border: 2px solid transparent;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content-box {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 70, 85, 0.2);
+        }
+
+        .content-box h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .content-box p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-embed {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .embed-placeholder {
+            flex: 1;
+            min-width: 300px;
+            min-height: 500px;
+            background: var(--dark-bg);
+            border: 2px dashed var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .embed-placeholder strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--card-bg);
+            text-align: center;
+            padding: 2rem;
+            border-top: 2px solid var(--primary);
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .carousel-item {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .player-visual {
+                min-height: 300px;
+                font-size: 5rem;
+            }
+
+            .player-name {
+                font-size: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            nav {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .team-stats {
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .tab-buttons {
+                gap: 0.5rem;
+            }
+
+            .tab-btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .content-box {
+                padding: 1.5rem;
+            }
+
+            .content-box h3 {
+                font-size: 1.5rem;
+            }
+
+            .social-embed {
+                gap: 1rem;
+            }
+
+            .embed-placeholder {
+                min-height: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">NTT</div>
+                <nav>
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#roster" class="nav-link">Roster</a>
+                    <a href="#about" class="nav-link">About</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- HOME SECTION -->
+    <section class="hero" id="home">
+        <video class="video-background" autoplay muted loop>
+            <source src="Type Shit - Made with Clipchamp.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Entity</h1>
+            <p>From Gold to VCT</p>
+            <div class="team-stats">
+                <div class="stat-item">
+                    <div class="stat-number">6</div>
+                    <div class="stat-label">Team Members</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Playoffs Apperances</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">0</div>
+                    <div class="stat-label">Trophy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROSTER SECTION -->
+    <section class="roster-section" id="roster">
+        <div class="container">
+            <h2 class="section-title">Meet Our <span>Roster</span></h2>
+            
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <!-- Player 1 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('eduardo-ribeiro-fadeoptimized.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">IGL/Initiator</div>
+                            <div class="player-name">shrayyy</div>
+                            <div class="player-description">
+                                Main Agents: Fade, Breach, Sova
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Gold 3</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player 2 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('mateusz-dabrowski-raze-4k.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">Duelist</div>
+                            <div class="player-name">ygg</div>
+                            <div class="player-description">
+                                Main Agents: Raze, Jett, Reyna
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Plat 1</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player 3 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('jared-koh-omen-fa.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">Controller</div>
+                            <div class="player-name">star</div>
+                            <div class="player-description">
+                                Main Agents: Omen, Clove
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Diamond 1</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player 4 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('Gg-lUFHXUAA-usJ.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">Initiator</div>
+                            <div class="player-name">Fansual</div>
+                            <div class="player-description">
+                                Main Agents: Tejo, Sage
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Gold 1</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player 5 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('mateusz-dabrowski-chamber-4k.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">Sentinel/Duelist</div>
+                            <div class="player-name">asio</div>
+                            <div class="player-description">
+                                Main Agents: Chamber, Jett, Waylay
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Gold 2</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Player 6 -->
+                    <div class="carousel-item">
+                        <div class="player-visual" style="background-image: url('FYDYiryVUAIbuC9.jpg');"></div>
+                        <div class="player-details">
+                            <div class="player-role">Sentinel</div>
+                            <div class="player-name">car1el</div>
+                            <div class="player-description">
+                                Main Agents: Cypher, Deadlock
+                            </div>
+                            <div class="player-stats-grid">
+                                <div class="stat-box">
+                                    <div class="stat-box-value">Gold 2</div>
+                                    <div class="stat-box-label">Current Rank</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="carousel-controls">
+                <button class="carousel-btn" id="prevBtn">❮</button>
+                <div class="carousel-dots" id="dots"></div>
+                <button class="carousel-btn" id="nextBtn">❯</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-header">
+                <h2 class="section-title">About <span>Us</span></h2>
+            </div>
+
+            <div class="tab-buttons">
+                <button class="tab-btn" data-tab="tiktok">TikTok</button>
+                <button class="tab-btn" data-tab="discord">Discord</button>
+            </div>
+
+            <!-- TikTok Tab -->
+            <div class="tab-content" id="tiktok-tab">
+                <h3>Follow Us on TikTok</h3>
+                <div style="background: var(--card-bg); padding: 2rem; border-radius: 10px; border: 2px solid var(--primary); text-align: center;">
+                    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@entity1619" data-unique-id="entity1619" data-embed-type="creator" style="max-width: 780px; min-width: 288px; margin: 0 auto;" > 
+                        <section> 
+                            <a target="_blank" href="https://www.tiktok.com/@entity1619?refer=creator_embed">@entity1619</a> 
+                        </section> 
+                    </blockquote> 
+                    <script async src="https://www.tiktok.com/embed.js"></script>
+                </div>
+            </div>
+                       
+
+            <!-- Discord Tab -->
+            <div style="background: var(--card-bg); padding: 2rem; border-radius: 10px; border: 2px solid var(--primary); text-align: center;">
+                <h3>Join Our Discord Community</h3>
+                <p style="color: var(--text-muted); margin: 1rem 0;">Connect with the team and other players!</p>
+                <a href="https://discord.gg/3QURrPjY" target="_blank" style="display: inline-block; background: #5865F2; color: white; padding: 1rem 2rem; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 1.2rem; transition: 0.3s;">
+                    🎮 Join Discord Server
+                </a>
+            </div>
+            
+            
+            
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Entity co. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#twitter">Twitter</a>
+                <a href="#discord">Discord</a>
+                <a href="#twitch">Twitch</a>
+                <a href="#youtube">YouTube</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navigation active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Carousel functionality
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('dots');
+        
+        const totalItems = 6;
+        let currentIndex = 0;
+
+        // Create dots
+        for (let i = 0; i < totalItems; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentIndex);
+            });
+        }
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        }
+
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        // Auto-advance carousel every 8 seconds
+        setInterval(nextSlide, 8000);
+
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabName = button.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and contents
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button and corresponding content
+                button.classList.add('active');
+                document.getElementById(`${tabName}-tab`).classList.add('active');
+            });
+        });
+
+        // Keyboard navigation for carousel
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+        });
+    </script>
+</body>
+</html>
